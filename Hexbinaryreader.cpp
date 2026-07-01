@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <string>
@@ -15,7 +15,7 @@ string byteToBinary(unsigned char byte) {
 void editFile(const string& filename, size_t position, unsigned char newValue) {
     fstream file(filename, ios::in | ios::out | ios::binary);
     if (!file) {
-        throw runtime_error("не получается изменить файл");
+        throw runtime_error("I can't modify the file");
     }
 
     file.seekg(0, ios::end);
@@ -31,13 +31,13 @@ void editFile(const string& filename, size_t position, unsigned char newValue) {
     file.write(reinterpret_cast<const char*>(&newValue), 1);
 
     if (!file.good()) {
-        throw runtime_error("ошибка");
+        throw runtime_error("error");
     }
 }
 void printHexDump(const string& filename, int page = 0, int pageSize = 256, bool showBinary = false) {
     ifstream file(filename, ios::binary);
     if (!file) {
-        cerr << "ошибка открытия" << endl;
+        cerr << "error to open" << endl;
         return;
     }
 
@@ -96,7 +96,7 @@ int main() {
     int page = 0;
     bool showBinary = false;
 
-    cout << "путь к файлу: ";
+    cout << "file path: ";
     getline(cin, filename);
 
     while (true) {
@@ -117,13 +117,13 @@ int main() {
             size_t address;
             unsigned char value;
 
-            cout << "ввеидте адрес (hex): ";
+            cout << "enter address (hex): ";
             getline(cin, addrStr);
             try {
                 address = stoul(addrStr, nullptr, 16);
             }
             catch (...) {
-                cout << "неккоректный адрес";
+                cout << "uncorrect address";
                 break;
             }
 
@@ -131,7 +131,7 @@ int main() {
             getline(cin, mode);
             std::transform(mode.begin(), mode.end(), mode.begin(), ::toupper);
 
-            cout << "введите значение: ";
+            cout << "enter value: ";
             getline(cin, valueStr);
             try {
                 if (mode == "H") {
@@ -150,16 +150,16 @@ int main() {
                 }
             }
             catch (...) {
-                cout << "некорректное значение";
+                cout << "uncorrect value";
                 break;
             }
 
             try {
                 editFile(filename, address, value);
-                cout << "успешно";
+                cout << "success";
             }
             catch (const exception& e) {
-                cout << "НЕ успешно: " << e.what();
+                cout << "not success: " << e.what();
             }
             Sleep(1500);
             break;
